@@ -1,0 +1,86 @@
+﻿@using InregistrareStudenti.Models
+@using Microsoft.EntityFrameworkCore
+@inject DatabaseContext dbContext
+
+<div class="row">
+    <div class="col-lg-4 pt-4">
+        <div class="mb-3">
+            <label class="form-label">Specialization</label>
+            <select class="form-select" @bind="_student.SpecId">
+                @foreach (var specialization in _specializations)
+                {
+                    <option value="@specialization.SpecId">@specialization.Name</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">User</label>
+            <select class="form-select" @bind="_student.UserId">
+                @foreach (var user in _users)
+                {
+                    <option value="@user.UserId">@user.FullName</option>
+                }
+            </select>
+        </div>
+        <div class="mb-3">
+            <button class="btn btn-primary" type="button" @onclick="Submit">Save</button>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public EventCallback OnStudentCreated { get; set; }
+
+    private StudentRegistration _student = new StudentRegistration();
+    private List<Specialization> _specializations = new List<Specialization>();
+    private List<User> _users = new List<User>();
+
+    protected override void OnInitialized()
+    {
+        LoadDropdownValues();
+        base.OnInitialized();
+    }
+
+    private void LoadDropdownValues()
+    {
+        _specializations = dbContext.Specs.ToList();
+
+        _users = dbContext.Users.ToList();
+    }
+
+    public async Task Submit()
+    {
+        try
+        {
+            var selectedSpecialization = _specializations.FirstOrDefault(s => s.SpecId == _student.SpecId);
+            var selectedUser = _users.FirstOrDefault(u => u.UserId == _student.UserId);
+
+            if (selectedSpecialization != null)
+            {
+                _student.Specialization = selectedSpecialization.Name;
+                _student.Tax = selectedSpecialization.Tax;
+                _student.Years = selectedSpecialization.Years;
+            }
+
+            if (selectedUser != null)
+            {
+                _student.FullName = selectedUser.FullName;
+                _student.Email = selectedUser.Email;
+            }
+
+            _student.RegisterDate = DateTime.Now.ToString("dd-MM-yyyy");
+
+            dbContext.Students.Add(_student);
+            await dbContext.SaveChangesAsync();
+
+            await OnStudentCreated.InvokeAsync();
+            _student = new StudentRegistration();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error saving student registration: {ex.Message}");
+            throw;
+        }
+    }
+}
