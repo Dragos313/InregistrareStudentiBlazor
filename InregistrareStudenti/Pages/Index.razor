@@ -1,9 +1,52 @@
 ﻿@page "/"
 
-<PageTitle>Index</PageTitle>
+@using InregistrareStudenti.Models
+@inject DatabaseContext dbContext
 
-<h1>Hello, world!</h1>
+<PageTitle>Student Registration</PageTitle>
 
-Welcome to your new app.
+<div class="container mt-3">
+    <h1 class="display-6 text-center mb-4">Hello, hope you're doing well today!</h1>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+    <p class="lead text-center fs-5 fw-bold">Here is the total registrations made until now:</p>
+
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-4">
+            <div class="card text-center" style="background-color: #ff5733; color: #ffffff;">
+                <div class="card-body">
+                    <h4 class="card-title">Users</h4>
+                    <p class="card-text fs-5 fw-bold">@userCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card text-center" style="background-color: #9d7c75; color: #ffffff;">
+                <div class="card-body">
+                    <h4 class="card-title">Specializations</h4>
+                    <p class="card-text fs-5 fw-bold">@specCount</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card text-center" style="background-color: #bb8f2e; color: #ffffff;">
+                <div class="card-body">
+                    <h4 class="card-title">Students</h4>
+                    <p class="card-text fs-5 fw-bold">@studentCount</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private int userCount;
+    private int specCount;
+    private int studentCount;
+
+    protected override void OnInitialized()
+    {
+        userCount = dbContext.Users.Count();
+        specCount = dbContext.Specs.Count();
+        studentCount = dbContext.Students.Count();
+    }
+}
