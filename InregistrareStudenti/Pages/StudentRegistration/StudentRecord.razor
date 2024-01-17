@@ -1,11 +1,11 @@
 ﻿@using InregistrareStudenti.Models
 <tr>
     <td>@RecordIndex</td>
-    <td>@Student.FullName</td>
-    <td>@Student.Email</td>
-    <td>@Student.Specialization</td>
-    <td>@Student.Tax</td>
-    <td>@Student.Years</td>
+    <td>@User.FullName</td>
+    <td>@User.Email</td>
+    <td>@Spec.Name</td>
+    <td>@Spec.Tax</td>
+    <td>@Spec.Years</td>
     <td>@Student.RegisterDate</td>
     <td>
         <a href="javascript:void(0)" @onclick="(async () => await StudentDelete.InvokeAsync(Student))">
@@ -20,6 +20,12 @@
 
     [Parameter]
     public StudentRegistration Student { get; set; }
+
+    [Parameter]
+    public Specialization Spec { get; set; }
+
+    [Parameter]
+    public User User { get; set; }
 
     [Parameter]
     public EventCallback<StudentRegistration> StudentDelete { get; set; }

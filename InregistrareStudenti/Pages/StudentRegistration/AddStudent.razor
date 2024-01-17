@@ -53,22 +53,6 @@
     {
         try
         {
-            var selectedSpecialization = _specializations.FirstOrDefault(s => s.SpecId == _student.SpecId);
-            var selectedUser = _users.FirstOrDefault(u => u.UserId == _student.UserId);
-
-            if (selectedSpecialization != null)
-            {
-                _student.Specialization = selectedSpecialization.Name;
-                _student.Tax = selectedSpecialization.Tax;
-                _student.Years = selectedSpecialization.Years;
-            }
-
-            if (selectedUser != null)
-            {
-                _student.FullName = selectedUser.FullName;
-                _student.Email = selectedUser.Email;
-            }
-
             _student.RegisterDate = DateTime.Now.ToString("dd-MM-yyyy");
 
             dbContext.Students.Add(_student);

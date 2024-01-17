@@ -1,4 +1,5 @@
 ﻿@using InregistrareStudenti.Models
+@inject DatabaseContext dbContext
 
 @if (Students is not null || Students.Count != 0)
 {
@@ -12,13 +13,21 @@
                 <th>Tax</th>
                 <th>Years</th>
                 <th>Registration Date</th>
-                <th></th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
             @for (int i = 0; i < Students.Count; i++)
             {
-                <StudentRecord RecordIndex=(i+1) Student="@Students[i]" StudentDelete="StudentDelete"></StudentRecord>
+                var currentStudent = Students[i];
+                var currentSpec = dbContext.Specs.FirstOrDefault(s => s.SpecId == currentStudent.SpecId);
+                var currentUser = dbContext.Users.FirstOrDefault(u => u.UserId == currentStudent.UserId);
+
+                <StudentRecord RecordIndex=(i+1)
+                               Student="@currentStudent"
+                               Spec="@currentSpec"
+                               User="@currentUser"
+                               StudentDelete="StudentDelete"></StudentRecord>
             }
         </tbody>
     </table>
@@ -31,3 +40,4 @@
     [Parameter]
     public EventCallback<StudentRegistration> StudentDelete { get; set; }
 }
+

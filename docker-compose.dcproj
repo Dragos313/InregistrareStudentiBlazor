@@ -4,7 +4,7 @@
     <ProjectVersion>2.1</ProjectVersion>
     <DockerTargetOS>Linux</DockerTargetOS>
     <DockerPublishLocally>False</DockerPublishLocally>
-    <ProjectGuid>4101ee97-17c1-4a47-b1df-b1c061bc0a50</ProjectGuid>
+    <ProjectGuid>814f0486-6ba1-440b-82d0-dd3799806b47</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
     <DockerServiceName>inregistrarestudenti</DockerServiceName>
